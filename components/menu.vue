@@ -1,6 +1,6 @@
 <template>
      <v-app-bar color="#ffffff">
-           <nuxt-link to="/"><v-toolbar-title class="app-name">ARTISANS.NG</v-toolbar-title></nuxt-link>
+           <nuxt-link to="/"><v-toolbar-title class="app-name">ARTISANSobinna.NG</v-toolbar-title></nuxt-link>
            <v-spacer></v-spacer>
            <section style="margin-right:80px">
             <v-btn text rounded class="menu-item">About Us</v-btn>
