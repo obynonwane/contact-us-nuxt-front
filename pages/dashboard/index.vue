@@ -3,7 +3,7 @@
         <v-main>
             <v-row>
                 <v-col>
-                 <h1>food</h1>
+                 <h1 v-if="authenticated">food</h1>
                 </v-col>
             </v-row>
         </v-main>
@@ -13,7 +13,9 @@
 import { mapMutations, mapGetters, mapActions } from 'vuex'
 export default {
     computed: {
-    
+      authenticated(){
+          return this.$store.state.auth.authenticated
+      }
       
     },
 
@@ -22,7 +24,7 @@ export default {
     }
     ,
     mounted(){
-        
+        this.$store.dispatch('auth/checkLogin');
     }
 }
 </script>

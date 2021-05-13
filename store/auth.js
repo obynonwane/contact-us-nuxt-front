@@ -2,9 +2,8 @@ import {CONSTANTS} from '@/helpers/constants'
 export const state = () => ({
     user:null,
     token:null,
-    authenticated:false,
-    list:[{name:'obinna', id:'bios@yahoo.com'},{name:"Ifunaya", id:'ify@yahoo.com'}],
     name:null,
+    authenticated:false
 })
 
 
@@ -36,7 +35,7 @@ export const actions = {
             console.log(response.data)
             let {user, token} = response.data
            
-
+            response.data.authenticated = true
             this.$axios.defaults.headers.common[
                 "Authorization"
               ] = `Bearer ${token}`;
@@ -45,23 +44,41 @@ export const actions = {
               this.$router.push("/dashboard");
 
 
-            let loginStatus = true;
-            commit("SET_LOGIN_TRUE", loginStatus);
+            let authenticated = true
+            commit("SET_LOGIN_TRUE", authenticated);
             commit("SET_USER", user)
             commit("SET_TOKEN", token)
         })
     },
-    getLocalStorage({commit}){
-        let token;
-        const local_item_name = CONSTANTS.AUTH_LOCAL_KEY
-        const localStorageItem = localStorage.getItem(local_item_name)
-      
-        if(localStorageItem) {
-          let appStorage = JSON.parse(localStorageItem);
-          token = appStorage.token
-          // console.log("token",token)
+
+    checkLogin({commit}){
+        try {
+       
+            const local_item_name = CONSTANTS.AUTH_LOCAL_KEY
+            const localStorageItem = localStorage.getItem(local_item_name)
+            if(localStorageItem) {
+                let appStorage = JSON.parse(localStorageItem);
+                let auth_state = appStorage.authenticated
+                let user = appStorage.user
+                commit("SET_LOGIN_TRUE", auth_state )
+                commit("SET_USER", user)
+              }
+        }catch(exceeption){
+            console.log(exceeption)
         }
-    }
+    },
+    logout(){
+        try{
+            const local_item_name = CONSTANTS.AUTH_LOCAL_KEY
+            localStorage.removeItem(local_item_name);
+            this.$router.push("/");
+            window.location.reload(true)
+        }catch(exceeption){
+            console.log(exceeption)
+            this.$router.push("/");
+            window.location.reload(true)
+        }
+    },
 }
 
 

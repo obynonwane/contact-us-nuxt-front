@@ -1,12 +1,13 @@
 <template>
      <v-app-bar color="#ffffff">
-           <nuxt-link to="/"><v-toolbar-title class="app-name">ARTISANSobinna.NG</v-toolbar-title></nuxt-link>
+           <nuxt-link to="/"><v-toolbar-title class="app-name">ARTISANS.NG </v-toolbar-title></nuxt-link>
            <v-spacer></v-spacer>
            <section style="margin-right:80px">
             <v-btn text rounded class="menu-item">About Us</v-btn>
             <v-btn text rounded class="menu-item">Contact Us</v-btn>
-            <nuxt-link to="/login"><v-btn text rounded class="menu-item">Login</v-btn></nuxt-link>
-            <nuxt-link to="/signup"><v-btn color="primary" style="margin-right:20px">Sign Up</v-btn></nuxt-link>
+            <nuxt-link to="/login"><v-btn text rounded class="menu-item" v-if="!authenticated">Login</v-btn></nuxt-link>
+            <nuxt-link to="/signup"><v-btn color="primary" style="margin-right:20px" v-if="!authenticated">Sign Up</v-btn></nuxt-link>
+            <v-btn color="primary" @click="signout" style="margin-right:20px" v-if="authenticated">Logout</v-btn>
             <!-- <v-icon medium color="primary darken-2"> mdi-bell </v-icon>
             <v-badge overlap dot color="red"></v-badge> -->
 
@@ -117,6 +118,21 @@ export default {
    },
   components: {
     
+  },
+  computed: {
+      authenticated(){
+          return this.$store.state.auth.authenticated
+      }
+      
+    },
+  methods:{
+    signout(){
+      console.log('logging out')
+      this.$store.dispatch('auth/logout');
+    }
+  },
+  mounted(){
+     this.$store.dispatch('auth/checkLogin');
   }
 }
 </script>
